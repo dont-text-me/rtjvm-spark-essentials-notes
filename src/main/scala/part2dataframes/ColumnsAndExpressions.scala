@@ -39,8 +39,10 @@ object ColumnsAndExpressions extends App {
     "Weight_in_lbs / 2.2"
   )
 
-  val carsWithKg3DF = carsDF.withColumn("Weight_in_kg_3", col("Weight_in_lbs") / 2.2)
-  val carsWithColumnRenamedDF = carsDF.withColumnRenamed("Weight_in_lbs", "Weight_in_pounds")
+  val carsWithKg3DF =
+    carsDF.withColumn("Weight_in_kg_3", col("Weight_in_lbs") / 2.2)
+  val carsWithColumnRenamedDF =
+    carsDF.withColumnRenamed("Weight_in_lbs", "Weight_in_pounds")
 
   val europeanCarsDF = carsDF.filter(col("Origin") =!= "USA")
   val europeanCarsDF2 = carsDF.where(col("Origin") =!= "USA")
@@ -50,10 +52,14 @@ object ColumnsAndExpressions extends App {
     .option("inferSchema", value = true)
     .load("src/main/resources/data/movies.json")
 
+  val comediesDF = movieDF
+    .select("Title", "IMDB_Rating", "Release_Date")
+    .where(col("Major_Genre") === "Comedy" and col("IMDB_Rating") > 6)
 
-  val comediesDF = movieDF.select("Title", "IMDB_Rating", "Release_Date").where(col("Major_Genre") === "Comedy" and col("IMDB_Rating") > 6)
-
-  val overallProfitDF = movieDF.select(col("Title"), (col("Worldwide_Gross") + col("US_Gross")).as("Overall_Gross"))
+  val overallProfitDF = movieDF.select(
+    col("Title"),
+    (col("Worldwide_Gross") + col("US_Gross")).as("Overall_Gross")
+  )
   comediesDF.show()
   overallProfitDF.show()
 

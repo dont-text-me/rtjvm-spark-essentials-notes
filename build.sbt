@@ -14,7 +14,6 @@ resolvers ++= Seq(
   "MavenRepository" at "https://mvnrepository.com"
 )
 
-
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % sparkVersion,
   "org.apache.spark" %% "spark-sql" % sparkVersion,

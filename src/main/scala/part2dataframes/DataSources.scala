@@ -1,29 +1,43 @@
 package part2dataframes
 
 import org.apache.spark.sql.{SaveMode, SparkSession}
-import org.apache.spark.sql.types.{DateType, DoubleType, LongType, StringType, StructField, StructType}
+import org.apache.spark.sql.types.{
+  DateType,
+  DoubleType,
+  LongType,
+  StringType,
+  StructField,
+  StructType
+}
 
 object DataSources extends App {
-  val spark = SparkSession.builder().appName("Data sources and formats")
-    .config("spark.master", "local").getOrCreate()
+  val spark = SparkSession
+    .builder()
+    .appName("Data sources and formats")
+    .config("spark.master", "local")
+    .getOrCreate()
 
-
-  val carsSchema = StructType(Array(
-    StructField("Name", StringType),
-    StructField("Miles_per_Gallon", DoubleType),
-    StructField("Cylinders", LongType),
-    StructField("Displacement", DoubleType),
-    StructField("Horsepower", LongType),
-    StructField("Weight_in_lbs", LongType),
-    StructField("Acceleration", DoubleType),
-    StructField("Year", DateType),
-    StructField("Origin", StringType)
-  ))
+  val carsSchema = StructType(
+    Array(
+      StructField("Name", StringType),
+      StructField("Miles_per_Gallon", DoubleType),
+      StructField("Cylinders", LongType),
+      StructField("Displacement", DoubleType),
+      StructField("Horsepower", LongType),
+      StructField("Weight_in_lbs", LongType),
+      StructField("Acceleration", DoubleType),
+      StructField("Year", DateType),
+      StructField("Origin", StringType)
+    )
+  )
 
   val carsDF = spark.read
     .format("json")
     .schema(carsSchema)
-    .option("mode", "failFast") // default is "permisive", also can be dropMalformed
+    .option(
+      "mode",
+      "failFast"
+    ) // default is "permisive", also can be dropMalformed
     .option("dateFormat", "YYYY-MM-dd")
     .load("src/main/resources/data/cars.json")
 
@@ -34,12 +48,13 @@ object DataSources extends App {
     .option("compression", "uncompressed")
     .json("src/main/resources/data/cars.json")
 
-
-  val stockSchema = StructType(Array(
-    StructField("symbol", StringType),
-    StructField("date", DateType),
-    StructField("price", DoubleType)
-  ))
+  val stockSchema = StructType(
+    Array(
+      StructField("symbol", StringType),
+      StructField("date", DateType),
+      StructField("price", DoubleType)
+    )
+  )
 
   spark.read
     .schema(stockSchema)
@@ -48,7 +63,6 @@ object DataSources extends App {
     .option("sep", ",")
     .option("nullValue", "")
     .csv("src/main/resources/data/stocks.csv")
-
 
   val employeesDF = spark.read
     .format("jdbc")

@@ -19,7 +19,6 @@ object ScalaRecap extends App {
 
   val three = 1.+(2)
 
-
   val incrementer: Int => Int = x => x + 1
   val incremented = incrementer(42)
 
@@ -41,7 +40,8 @@ object ScalaRecap extends App {
 
   aFuture.onComplete {
     case Success(value) => println(s"Computation complete with result $value")
-    case Failure(exception) => println(s"I have failed with exception $exception")
+    case Failure(exception) =>
+      println(s"I have failed with exception $exception")
   }
 
   def methodWithImplicitArgument(implicit x: Int) = x + 43
@@ -57,7 +57,7 @@ object ScalaRecap extends App {
 
   "Bob".greet // implicit conversion! the compiler looks for a suitable implicit method so that the code compiles
 
-  implicit class Dog(name: String){
+  implicit class Dog(name: String) {
     def bark = println("Bark")
   }
 
